@@ -29,6 +29,12 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
     /// </summary>
     public Dictionary<string, object> PluginData { get; set; } = new Dictionary<string, object>();
 
+    // V3 (Launcher only right now)
+    public string[] SortedMods { get; set; }
+    public bool PreserveDisabledModOrder { get; set; } = true; // <= default to 'true' for new configs, and 'false' for configs on older versions.
+    public bool DontInject { get; set; } = false; // don't inject loader, start game via regular process launch.
+    public bool IsMsStore { get; set; } = false; // attempts to unprotect this binary on every launch.
+
     /*
        --------------
        Create/Destroy
@@ -43,6 +49,7 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
         AppName = appName;
         AppLocation = appLocation;
         EnabledMods = EmptyArray<string>.Instance;
+        SortedMods = EmptyArray<string>.Instance;
         WorkingDirectory = workingDirectory;
     }
 
@@ -213,6 +220,7 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
     public void SanitizeConfig()
     {
         EnabledMods ??= EmptyArray<string>.Instance;
+        SortedMods ??= EmptyArray<string>.Instance;
     }
 
     public override int GetHashCode() => (AppId != null ? AppId.GetHashCode() : 0);

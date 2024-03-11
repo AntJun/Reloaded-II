@@ -75,6 +75,7 @@ public class PluginManager : IDisposable
             return;
 
         var watch = Stopwatch.StartNew();
+        Logger?.LogWriteLineAsync($"Loading {modPaths.Count} Mod(s).");
         foreach (var mod in modPaths)
         {
             watch.Restart();
@@ -91,8 +92,11 @@ public class PluginManager : IDisposable
             else
                 instance = PrepareDllMod(mod);
 
+            Logger?.LogWriteLineAsync(String.Empty);
+            Logger?.LogWriteLineAsync($"Loading: {mod.Config.ModName}");
+            Logger?.LogWriteLineAsync($"- AppId   : {mod.Config.ModId}");
             StartMod(instance);
-            Logger?.LogWriteLineAsync($"Loaded: {mod.Config.ModId} in {watch.ElapsedMilliseconds}ms");
+            Logger?.LogWriteLineAsync($"- LoadTime: {watch.ElapsedMilliseconds}ms");
         }
     }
 
